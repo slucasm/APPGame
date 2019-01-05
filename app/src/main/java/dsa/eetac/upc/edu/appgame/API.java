@@ -41,6 +41,6 @@ public interface API {
     @PATCH("/admin/{userName}")
     Call<Response> admin(@Path("userName") String userName);
 
-    
+
 
 }
