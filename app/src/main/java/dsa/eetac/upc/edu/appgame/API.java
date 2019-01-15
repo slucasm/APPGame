@@ -7,27 +7,43 @@ import com.google.gson.GsonBuilder;
 
 import java.util.List;
 
+import dsa.eetac.upc.edu.appgame.models.BodyUser;
 import dsa.eetac.upc.edu.appgame.models.Game;
+import dsa.eetac.upc.edu.appgame.models.Respuesta;
 import dsa.eetac.upc.edu.appgame.models.User;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Body;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface API {
 
     static final String TAG = "API";
 
 
-    @POST("user/login/{userName}")
-    Call<Void> login(@Path("userName") String userName, @Body String password);
+    //@POST("user/login/{userName}")
+    //Call<ResponseBody> login(@Path("userName") String userName,String password);
 
-    @PUT("user/register/{userName}")
-    Call<Void> register(@Path("userName") String userName,@Body String password);
+    @POST("user/login/")
+    Call<Respuesta> login(@Body BodyUser bodyUser);
+
+    @PUT("user/register/")
+    Call<Respuesta> register(@Body BodyUser bodyUser);
+
+
+
+
+
+
 
     @GET("user/loadUsers")
     Call<List<User>> loadUsers();

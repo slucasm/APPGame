@@ -12,8 +12,11 @@ import android.widget.Toast;
 
 import java.util.List;
 
+import dsa.eetac.upc.edu.appgame.models.BodyUser;
 import dsa.eetac.upc.edu.appgame.models.Game;
+import dsa.eetac.upc.edu.appgame.models.Respuesta;
 import dsa.eetac.upc.edu.appgame.models.User;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -65,7 +68,7 @@ public class LoginActivity extends AppCompatActivity {
         progressDialog.setCancelable(false);
         progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
 
-        getListGames();
+        //getListGames();
 
         loadUsers();
 
@@ -73,7 +76,7 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                login();
+                login(usernameInputText.getText().toString(),passwordInputText.getText().toString());
             }
         });
 
@@ -81,62 +84,44 @@ public class LoginActivity extends AppCompatActivity {
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                register();
+                register(usernameInputText.getText().toString(),passwordInputText.getText().toString());
             }
         });
     }
 
-    public void login(){
-        userName = usernameInputText.getText().toString();
-        password = passwordInputText.getText().toString();
+    public void login(String userName, String password){
+        //userName = usernameInputText.getText().toString();
+        //password = passwordInputText.getText().toString();
 
         Log.i(TAG,"Click on Login Button");
 
-        Call<Void> responseCall = api.login("Meritxell","holahola");
+
+        //Call<ResponseBody> responseCall = api.login("Meritxell","holahola");
+        BodyUser bodyUser = new BodyUser(userName,password);
+        Call<Respuesta> responseCall = api.login(bodyUser);
         //Call<Void> responseCall = api.login(userName,password);
         Log.i(TAG,"Get login for api");
         progressDialog.show();
 
-        responseCall.enqueue(new Callback<Void>() {
+        responseCall.enqueue(new Callback<Respuesta>() {
             @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                if (response.isSuccessful()) {
-                    int codeResponse;
-                    codeResponse = response.code();
+            public void onResponse(Call<Respuesta> call, Response<Respuesta> response) {
+                Respuesta respuesta = response.body();
+                Boolean loginIsSuccessful = false;
+                int code = respuesta.getCode();
+                String  message = respuesta.getMessage();
 
-                    if (codeResponse == 1) {
-                        messageLogin = "User is banned";
-                        loginSuccessful = false;
-                        Toast toast = Toast.makeText(getApplicationContext(), "User is banned", Toast.LENGTH_LONG);
-                        toast.show();
-                    } else if (codeResponse == 201) {
-                        loginSuccessful = true;
-                        messageLogin = "Successful";
-                        Toast toast = Toast.makeText(getApplicationContext(), "Successful", Toast.LENGTH_LONG);
-                        toast.show();
-                    } else if (codeResponse == 3) {
-                        isAdmin = true;
-                        messageLogin = "User is admin";
-                        loginSuccessful = true;
-                        Toast toast = Toast.makeText(getApplicationContext(), "Successful, you're Admin", Toast.LENGTH_LONG);
-                        toast.show();
-                    } else {
-                        messageLogin = "Password incorrect";
-                        loginSuccessful = false;
-                        Toast toast = Toast.makeText(getApplicationContext(), "Password incorrect", Toast.LENGTH_LONG);
-                        toast.show();
-                    }
-                    progressDialog.hide();
+                if (code == 2){
+                    loginIsSuccessful = true;
+
                 }
-                else{
-                    Toast toast = Toast.makeText(getApplicationContext(),"Error!",Toast.LENGTH_LONG);
-                    toast.show();
-                    progressDialog.hide();
-                }
+                Toast toast = Toast.makeText(getApplicationContext(),message,Toast.LENGTH_LONG);
+                toast.show();
+                progressDialog.hide();
             }
 
             @Override
-            public void onFailure(Call<Void> call, Throwable t) {
+            public void onFailure(Call<Respuesta> call, Throwable t) {
                 Toast toast = Toast.makeText(getApplicationContext(),"Connection error!",Toast.LENGTH_LONG);
                 toast.show();
                 progressDialog.hide();
@@ -147,50 +132,39 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    public void register(){
-        userName = usernameInputText.getText().toString();
-        password = passwordInputText.getText().toString();
+    public void register(String userName, String password){
+        //userName = usernameInputText.getText().toString();
+        //password = passwordInputText.getText().toString();
 
         Log.i(TAG,"Click on Register Button");
 
-        Call<Void> responseCall = api.register(userName,password);
+        BodyUser bodyUser = new BodyUser(userName,password);
+
+
+        Call<Respuesta> responseCall = api.register(bodyUser);
         Log.i(TAG,"Get register for api");
         progressDialog.show();
-        responseCall.enqueue(new Callback<Void>() {
+        responseCall.enqueue(new Callback<Respuesta>() {
             @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                int codeResponse;
-                codeResponse = response.code();
-                if (codeResponse == 1){
-                    messageRegister = "Successful";
-                    registerSuccessful = true;
-                    Toast toast = Toast.makeText(getApplicationContext(),"Successful",Toast.LENGTH_LONG);
-                    toast.show();
-                } else if(codeResponse == 2){
-                    messageRegister = "User already exists";
-                    registerSuccessful = false;
-                    Toast toast = Toast.makeText(getApplicationContext(),"User already exists",Toast.LENGTH_LONG);
-                    toast.show();
-                }else {
-                    messageRegister = "Another error";
-                    registerSuccessful = false;
-                    Toast toast = Toast.makeText(getApplicationContext(),"Error",Toast.LENGTH_LONG);
-                    toast.show();
-                }
-
+            public void onResponse(Call<Respuesta> call, Response<Respuesta> response) {
+                Respuesta respuesta = response.body();
                 progressDialog.hide();
+                int code = respuesta.getCode();
+                String message = respuesta.getMessage();
 
-                if (registerSuccessful == true){
-                    api.login(userName,password); //si nos registramos luego hacemos login
+                if (code == 1){
+                    login(userName,password);
+
                 }
+
 
             }
 
             @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                Toast toast = Toast.makeText(getApplicationContext(),"Connection error",Toast.LENGTH_LONG);
+            public void onFailure(Call<Respuesta> call, Throwable t) {
+                Toast toast = Toast.makeText(getApplicationContext(),"Connection error!",Toast.LENGTH_LONG);
                 toast.show();
-
+                progressDialog.hide();
             }
         });
     }
@@ -201,14 +175,14 @@ public class LoginActivity extends AppCompatActivity {
         userCall.enqueue(new Callback<List<User>>() {
             @Override
             public void onResponse(Call<List<User>> call, Response<List<User>> response) {
-                if (response.isSuccessful()){
+                int code = response.code();
+               // if (response.code() == 1){
                     List<User> userList = response.body();
 
                     for (int i = 0; i < userList.size(); i++){
                         Log.i(TAG, userList.get(i).getUserName());
                     }
-                }
-                else{
+                /*else{
                     Log.e("Login", "Else");
 
                     progressDialog.hide();
@@ -225,7 +199,7 @@ public class LoginActivity extends AppCompatActivity {
 
                     AlertDialog alertDialog = alertDialogBuilder.create();
                     alertDialog.show();
-                }
+                }*/
             }
 
             @Override
