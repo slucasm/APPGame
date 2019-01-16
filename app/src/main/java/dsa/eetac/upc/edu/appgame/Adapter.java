@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +38,15 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         holder.TextView_name.setText(game.getNameGame().toString());
         holder.TextView_health.setText(Integer.toString(game.getHealthPoints()));
         holder.TextView_length.setText(Integer.toString(game.getGameLength()));
+
+        holder.constraintLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TextView textView = v.findViewById(R.id.textView_name);
+                Toast toast = Toast.makeText(context,textView.getText().toString(),Toast.LENGTH_LONG);
+                toast.show();
+            }
+        });
 
     }
 

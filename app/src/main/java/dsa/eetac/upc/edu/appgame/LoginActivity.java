@@ -48,13 +48,13 @@ public class LoginActivity extends AppCompatActivity {
     ProgressDialog progressDialog;
 
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        Toast toast = Toast.makeText(getApplicationContext(),"Hola",Toast.LENGTH_LONG);
-        toast.show();
         api = API.createAPI();
 
 
@@ -71,14 +71,19 @@ public class LoginActivity extends AppCompatActivity {
         progressDialog.setCancelable(false);
         progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
 
-        //getListGames();
 
-        //loadUsers();
+        final SharedPreferences sharedPref =
+                PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putBoolean("registered", false);
+        editor.putString("userName", "");
+        editor.putString("password", "");
+        editor.apply();
 
-        //getGameOfUser();
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progressDialog.show();
                 login(usernameInputText.getText().toString(),passwordInputText.getText().toString());
             }
         });
@@ -87,6 +92,7 @@ public class LoginActivity extends AppCompatActivity {
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progressDialog.show();
                 register(usernameInputText.getText().toString(),passwordInputText.getText().toString());
             }
         });
@@ -104,7 +110,6 @@ public class LoginActivity extends AppCompatActivity {
         Call<Respuesta> responseCall = api.login(bodyUser);
         //Call<Void> responseCall = api.login(userName,password);
         Log.i(TAG,"Get login for api");
-        progressDialog.show();
 
         responseCall.enqueue(new Callback<Respuesta>() {
             @Override
@@ -168,12 +173,13 @@ public class LoginActivity extends AppCompatActivity {
     public void register(String userName, String password){
         Log.i(TAG,"Click on Register Button");
 
+
         BodyUser bodyUser = new BodyUser(userName,password);
 
 
         Call<Respuesta> responseCall = api.register(bodyUser);
         Log.i(TAG,"Get register for api");
-        progressDialog.show();
+
         responseCall.enqueue(new Callback<Respuesta>() {
             @Override
             public void onResponse(Call<Respuesta> call, Response<Respuesta> response) {

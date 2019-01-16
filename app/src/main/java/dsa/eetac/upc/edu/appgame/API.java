@@ -55,6 +55,9 @@ public interface API {
     @GET("game/getGame/{userName}/{nameGame}")
     Call<Game> getGameOfUser(@Path("userName") String userName,@Path("nameGame") String nameGame);
 
+    @PUT("game/newGame/{userName}/{gameName}")
+    Call<Respuesta> newGame(@Path("userName") String userName, @Path("gameName") String gameName);
+
     static API createAPI() {
 
         Gson gson = new GsonBuilder()

@@ -7,11 +7,22 @@
     tools:context=".LoadGamesActivity"
     android:background="@color/grisAPP">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:navigationIcon="@drawable/flecha"
+        app:title="SELECT ONE GAME"
+        app:titleTextColor="@color/white"
+        />
 
     <android.support.v7.widget.RecyclerView
-        android:id = "@+id/recyclerView"
-        android:layout_width = "match_parent"
-        android:layout_height= "match_parent"
-        android:layout_marginTop="10dp"/>
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="55dp">
+
+    </android.support.v7.widget.RecyclerView>
+
 
 </android.support.constraint.ConstraintLayout>
