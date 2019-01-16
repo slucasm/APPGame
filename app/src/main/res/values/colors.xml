@@ -5,4 +5,5 @@
     <color name="colorAccent">#D81B60</color>
     <color name="blueAPP">#FF007CBF</color>
     <color name="grisAPP">#FF2D2D30</color>
+    <color name="white">#FFFFFFFF</color>
 </resources>

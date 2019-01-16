@@ -19,22 +19,6 @@ public class User {
     @SerializedName("isBanned")
     @Expose
    public int isBanned;
-/*
-    @SerializedName("userName")
-    @Expose
-    public String userName;
-    @SerializedName("money")
-    @Expose
-    public double money;
-    @SerializedName("isBanned")
-    @Expose
-    public int isBanned;
-    @SerializedName("isAdmin")
-    @Expose
-    private int isAdmin;
-    @SerializedName("password")
-    @Expose
-    private String password;*/
 
     public User (String userName, String password, int isAdmin, int money,int isBanned){
         //this.idUser = idUser;

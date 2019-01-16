@@ -20,6 +20,7 @@ import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
@@ -30,20 +31,11 @@ public interface API {
     static final String TAG = "API";
 
 
-    //@POST("user/login/{userName}")
-    //Call<ResponseBody> login(@Path("userName") String userName,String password);
-
     @POST("user/login/")
     Call<Respuesta> login(@Body BodyUser bodyUser);
 
     @PUT("user/register/")
     Call<Respuesta> register(@Body BodyUser bodyUser);
-
-
-
-
-
-
 
     @GET("user/loadUsers")
     Call<List<User>> loadUsers();
@@ -56,6 +48,9 @@ public interface API {
 
     @GET("game/llistaGames")
     Call<List<Game>> getListGames();
+
+    @GET("game/gameList/{userName}")
+    Call<List<Game>> getListGamesOfUser(@Path("userName") String userName);
 
     @GET("game/getGame/{userName}/{nameGame}")
     Call<Game> getGameOfUser(@Path("userName") String userName,@Path("nameGame") String nameGame);

@@ -2,6 +2,9 @@ package dsa.eetac.upc.edu.appgame;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -70,7 +73,7 @@ public class LoginActivity extends AppCompatActivity {
 
         //getListGames();
 
-        loadUsers();
+        //loadUsers();
 
         //getGameOfUser();
         loginButton.setOnClickListener(new View.OnClickListener() {
@@ -108,16 +111,46 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(Call<Respuesta> call, Response<Respuesta> response) {
                 Respuesta respuesta = response.body();
                 Boolean loginIsSuccessful = false;
+                Boolean isBanned = false;
                 int code = respuesta.getCode();
                 String  message = respuesta.getMessage();
-
-                if (code == 2){
-                    loginIsSuccessful = true;
-
-                }
-                Toast toast = Toast.makeText(getApplicationContext(),message,Toast.LENGTH_LONG);
-                toast.show();
                 progressDialog.hide();
+                if (code == 2){ //Successful
+                    loginIsSuccessful = true;
+                    Toast toast = Toast.makeText(getApplicationContext(),message,Toast.LENGTH_LONG);
+                    toast.show();
+                }
+                else if(code == 1){ //User is banned
+                    isBanned = true;
+                    Toast toast = Toast.makeText(getApplicationContext(),message,Toast.LENGTH_LONG);
+                    toast.show();
+                }
+                else if(code == 0){ //Password incorrect
+                    Toast toast = Toast.makeText(getApplicationContext(),message,Toast.LENGTH_LONG);
+                    toast.show();
+                }
+                else if(code == 3){ //User is admin
+                    loginIsSuccessful = true;
+                    Toast toast = Toast.makeText(getApplicationContext(),message,Toast.LENGTH_LONG);
+                    toast.show();
+                }
+
+                if (loginIsSuccessful){
+                    final SharedPreferences sharedPref =
+                            PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
+                    SharedPreferences.Editor editor = sharedPref.edit();
+                    editor.putBoolean("registered", true);
+                    editor.putString("userName", userName);
+                    editor.putString("password", password);
+                    editor.apply();
+
+                    Intent intent = new Intent(LoginActivity.this, PreGame_Activity.class);
+                    intent.putExtra("userName",userName);
+                    intent.putExtra("password",password);
+                    startActivity(intent);
+                    finish();
+                }
+
             }
 
             @Override
@@ -133,9 +166,6 @@ public class LoginActivity extends AppCompatActivity {
 
 
     public void register(String userName, String password){
-        //userName = usernameInputText.getText().toString();
-        //password = passwordInputText.getText().toString();
-
         Log.i(TAG,"Click on Register Button");
 
         BodyUser bodyUser = new BodyUser(userName,password);
@@ -154,7 +184,10 @@ public class LoginActivity extends AppCompatActivity {
 
                 if (code == 1){
                     login(userName,password);
-
+                }
+                else if(code == 2){
+                    Toast toast = Toast.makeText(getApplicationContext(),message,Toast.LENGTH_LONG);
+                    toast.show();
                 }
 
 
@@ -225,60 +258,6 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    public void getListGames(){
-        Call<List<Game>> gameCall = api.getListGames();
-
-        gameCall.enqueue(new Callback<List<Game>>() {
-            @Override
-            public void onResponse(Call<List<Game>> call, Response<List<Game>> response) {
-                if (response.isSuccessful()){
-                    List<Game> gameList = response.body();
-
-                    for (int i = 0; i < gameList.size();i++){
-                        Log.i(TAG,gameList.get(i).getNameGame());
-                    }
-                } else{
-                    Log.e(TAG,Integer.toString(response.code()));
-                    Log.e("Login", "Else Games");
-
-                    progressDialog.hide();
-
-                    //Show the alert dialog
-                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(LoginActivity.this);
-
-                    alertDialogBuilder
-                            .setTitle("Error")
-                            .setMessage(response.message())
-                            .setCancelable(false)
-                            .setPositiveButton("OK", (dialog, which) -> {
-                            });
-
-                    AlertDialog alertDialog = alertDialogBuilder.create();
-                    alertDialog.show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<Game>> call, Throwable t) {
-                Log.e("Login game", t.getMessage());
-
-                progressDialog.hide();
-
-                //Show the alert dialog
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(LoginActivity.this);
-
-                alertDialogBuilder
-                        .setTitle("Error")
-                        .setMessage(t.getMessage())
-                        .setCancelable(false)
-                        .setPositiveButton("OK", (dialog, which) -> {
-                        });
-
-                AlertDialog alertDialog = alertDialogBuilder.create();
-                alertDialog.show();
-            }
-        });
-    }
 
     public void getGameOfUser(){
         Call<Game> gameCall = api.getGameOfUser("Meritxell","partida5");
