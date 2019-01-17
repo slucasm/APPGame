@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -39,6 +40,14 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         holder.TextView_health.setText(Integer.toString(game.getHealthPoints()));
         holder.TextView_length.setText(Integer.toString(game.getGameLength()));
 
+        int isCompleted = game.getIsCompleted();
+
+        if (isCompleted == 1){
+            holder.checkBox.setChecked(true);
+        } else if(isCompleted == 0){
+            holder.checkBox.setChecked(false);
+        }
+
         holder.constraintLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,6 +77,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         private TextView TextView_name;
         private TextView TextView_health;
         private TextView TextView_length;
+        private CheckBox checkBox;
 
         public ViewHolder(View itemView){
             super(itemView);
@@ -76,6 +86,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
             TextView_name =  itemView.findViewById(R.id.textView_name);
             TextView_health = itemView.findViewById(R.id.textView_health);
             TextView_length = itemView.findViewById(R.id.textView_length);
+            checkBox = itemView.findViewById(R.id.checkBox);
         }
     }
 }

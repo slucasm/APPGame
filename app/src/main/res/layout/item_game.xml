@@ -11,10 +11,10 @@
 
     <TextView
         android:id="@+id/textView_name"
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="44dp"
-        android:layout_marginLeft="44dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginLeft="15dp"
         android:layout_marginTop="37dp"
         android:layout_marginBottom="36dp"
         android:text="TextView"
@@ -26,10 +26,10 @@
 
     <TextView
         android:id="@+id/textView_length"
-        android:layout_width="wrap_content"
+        android:layout_width="82dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="25dp"
-        android:layout_marginLeft="25dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginLeft="30dp"
         android:layout_marginTop="37dp"
         android:layout_marginBottom="36dp"
         android:text="TextView"
@@ -41,11 +41,11 @@
 
     <TextView
         android:id="@+id/textView_health"
-        android:layout_width="wrap_content"
+        android:layout_width="82dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="25dp"
 
-        android:layout_marginLeft="25dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
         android:layout_marginTop="37dp"
         android:layout_marginBottom="36dp"
         android:text="TextView"
@@ -55,9 +55,20 @@
         app:layout_constraintStart_toEndOf="@+id/textView_length"
         app:layout_constraintTop_toTopOf="parent" />
 
-
-
-
+    <CheckBox
+        android:id="@+id/checkBox"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="-10dp"
+        android:layout_marginLeft="-10dp"
+        android:layout_marginTop="38dp"
+        android:layout_marginBottom="37dp"
+        android:clickable="false"
+        android:shadowColor="@color/white"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView_health"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </android.support.constraint.ConstraintLayout>
