@@ -34,7 +34,7 @@ public interface API {
     @POST("user/login/")
     Call<Respuesta> login(@Body BodyUser bodyUser);
 
-    @PUT("user/register/")
+    @POST("user/register/")
     Call<Respuesta> register(@Body BodyUser bodyUser);
 
     @GET("user/loadUsers")
@@ -55,7 +55,7 @@ public interface API {
     @GET("game/getGame/{userName}/{nameGame}")
     Call<Game> getGameOfUser(@Path("userName") String userName,@Path("nameGame") String nameGame);
 
-    @PUT("game/newGame/{userName}/{gameName}")
+    @POST("game/newGame/{userName}/{gameName}")
     Call<Respuesta> newGame(@Path("userName") String userName, @Path("gameName") String gameName);
 
     static API createAPI() {
