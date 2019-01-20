@@ -74,7 +74,10 @@ public class PreGame_Activity extends AppCompatActivity {
             public void onClick(View v) {
                 alertDialogCreateGame(userName);
 
+                putUserAndGame(userName,gameName);
 
+                Intent intent = new Intent(getApplicationContext(),GameActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -146,6 +149,26 @@ public class PreGame_Activity extends AppCompatActivity {
                 progressDialog.hide();
                 Toast toast = Toast.makeText(getApplicationContext(),"Error!",Toast.LENGTH_LONG);
                 toast.show();
+            }
+        });
+    }
+
+    public void putUserAndGame(String userName,String gameName){
+        Call<Respuesta> respuestaCall = api.putUserAndGame(userName, gameName);
+        respuestaCall.enqueue(new Callback<Respuesta>() {
+            @Override
+            public void onResponse(Call<Respuesta> call, Response<Respuesta> response) {
+                Respuesta respuesta = response.body();
+                int code = respuesta.getCode();
+                if (code == 1){
+                    Toast toast = Toast.makeText(getApplicationContext(),respuesta.getMessage(),Toast.LENGTH_LONG);
+                    toast.show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Respuesta> call, Throwable t) {
+
             }
         });
     }

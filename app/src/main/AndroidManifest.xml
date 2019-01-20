@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="dsa.eetac.upc.edu.appgame">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -10,7 +11,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:replace="android:icon,android:theme">
         <activity android:name=".PreGame_Activity" />
         <activity android:name=".SplashScreenActivity">
             <intent-filter>
@@ -20,7 +22,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".LoginActivity" />
-        <activity android:name=".LoadGamesActivity"></activity>
+        <activity android:name=".LoadGamesActivity" />
+        <activity android:name=".GameActivity"></activity>
     </application>
 
 </manifest>

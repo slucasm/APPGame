@@ -41,7 +41,7 @@ public class LoadGamesActivity extends AppCompatActivity {
         String password = getIntent().getExtras().getString("password");
 
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        recycler = new Adapter(this);
+        recycler = new Adapter(this,userName);
         recyclerView.setAdapter(recycler);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));

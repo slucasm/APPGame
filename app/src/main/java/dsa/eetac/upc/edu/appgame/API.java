@@ -40,15 +40,6 @@ public interface API {
     @GET("user/loadUsers")
     Call<List<User>> loadUsers();
 
-    /*@PATCH("banned/{userName}")
-    Call<Response> banned(@Path("userName") String userName);
-
-    @PATCH("admin/{userName}")
-    Call<Response> admin(@Path("userName") String userName);*/
-
-    @GET("game/llistaGames")
-    Call<List<Game>> getListGames();
-
     @GET("game/gameList/{userName}")
     Call<List<Game>> getListGamesOfUser(@Path("userName") String userName);
 
@@ -57,6 +48,9 @@ public interface API {
 
     @POST("game/newGame/{userName}/{gameName}")
     Call<Respuesta> newGame(@Path("userName") String userName, @Path("gameName") String gameName);
+
+    @POST("user/putUserAndGame/{userName}/{gameName}")
+    Call<Respuesta> putUserAndGame(@Path("userName") String userName,@Path("gameName") String gameName);
 
     static API createAPI() {
 
